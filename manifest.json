@@ -9,14 +9,20 @@
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "icon.png",
-      "48": "icon.png",
-      "128": "icon.png"
+      "16": "drop.png",
+      "48": "drop.png",
+      "128": "drop.png"
     }
   },
   "icons": {
-    "16": "icon.png",
-    "48": "icon.png",
-    "128": "icon.png"
-  }
+    "16": "drop.png",
+    "48": "drop.png",
+    "128": "drop.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["alert.mp3"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }

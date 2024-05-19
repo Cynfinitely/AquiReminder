@@ -1,9 +1,51 @@
 <!DOCTYPE html>
 <html>
-  <body style="min-width: 100px">
-    <input type="text" id="id_Sec" value="" size="1" /> sec<br />
-    <input type="button" id="id_Set" value="Set" /><br />
-    <input type="button" id="id_Clear" value="Clear" />
-    <script src="myscript.js"></script>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #e0f7fa;
+        padding: 10px;
+        text-align: center;
+      }
+      h2 {
+        color: #0277bd;
+      }
+      #id_Sec {
+        margin: 10px 0;
+        padding: 5px;
+        width: 50px;
+        border-radius: 5px;
+        border: 1px solid #0277bd;
+      }
+      .button {
+        background-color: #0277bd;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Water Reminder</h2>
+    <div id="setReminder">
+      <p>Set your reminder:</p>
+      <input type="text" id="id_Sec" value="" placeholder="Minutes" />
+      <br />
+      <button class="button" id="id_Set">Set</button>
+    </div>
+    <div id="remainingTime" style="display: none">
+      <p>Time remaining:</p>
+      <h3 id="time"></h3>
+    </div>
+    <button class="button" id="id_Clear">Clear</button>
+    <script src="popup.js"></script>
   </body>
 </html>
