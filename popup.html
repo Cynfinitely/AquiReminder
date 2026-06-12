@@ -1,51 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #e0f7fa;
-        padding: 10px;
-        text-align: center;
-      }
-      h2 {
-        color: #0277bd;
-      }
-      #id_Sec {
-        margin: 10px 0;
-        padding: 5px;
-        width: 50px;
-        border-radius: 5px;
-        border: 1px solid #0277bd;
-      }
-      .button {
-        background-color: #0277bd;
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 5px;
-      }
-    </style>
+    <meta charset="UTF-8" />
+    <title>AquiReminder</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
-    <h2>Water Reminder</h2>
-    <div id="setReminder">
-      <p>Set your reminder:</p>
-      <input type="text" id="id_Sec" value="" placeholder="Minutes" />
-      <br />
-      <button class="button" id="id_Set">Set</button>
-    </div>
-    <div id="remainingTime" style="display: none">
-      <p>Time remaining:</p>
-      <h3 id="time"></h3>
-    </div>
-    <button class="button" id="id_Clear">Clear</button>
+  <body class="popup-body">
+    <header class="header">
+      <img src="drop.png" alt="" />
+      <h1>AquiReminder</h1>
+    </header>
+    <main>
+      <div id="setReminder">
+        <p class="section-label">How often should we remind you?</p>
+        <div class="preset-row">
+          <button class="chip" type="button" data-minutes="15">15m</button>
+          <button class="chip" type="button" data-minutes="30">30m</button>
+          <button class="chip" type="button" data-minutes="60">60m</button>
+        </div>
+        <div class="input-row">
+          <label for="id_Sec">Custom</label>
+          <input
+            type="number"
+            id="id_Sec"
+            min="1"
+            max="480"
+            placeholder="Minutes"
+            aria-describedby="error"
+          />
+        </div>
+        <button class="btn btn-primary" id="id_Set" type="button" disabled>
+          Start reminders
+        </button>
+        <p class="error" id="error"></p>
+      </div>
+      <div id="remainingTime" class="hidden">
+        <div class="countdown-section">
+          <p class="section-label">Next reminder in</p>
+          <div class="countdown-ring">
+            <div class="countdown-ring-inner">
+              <span class="countdown-time" id="time" aria-live="polite">0:00</span>
+            </div>
+          </div>
+          <p class="interval-label" id="intervalInfo"></p>
+        </div>
+        <button class="btn btn-secondary" id="id_Clear" type="button">
+          Stop reminders
+        </button>
+      </div>
+    </main>
     <script src="popup.js"></script>
   </body>
 </html>

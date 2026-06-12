@@ -1,11 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "Water Reminder",
-  "version": "1.0",
+  "name": "AquiReminder",
+  "version": "1.2",
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": ["alarms", "notifications", "storage", "tabs"],
+  "permissions": ["alarms", "storage"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
