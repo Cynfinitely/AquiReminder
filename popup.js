@@ -13,6 +13,7 @@ const intervalInfoEl = document.getElementById("intervalInfo");
 const setReminderEl = document.getElementById("setReminder");
 const remainingTimeEl = document.getElementById("remainingTime");
 const presetChips = document.querySelectorAll(".chip");
+const languageSelect = document.getElementById("languageSelect");
 
 function validateMinutes(value) {
   const minutes = parseInt(value, 10);
@@ -35,7 +36,7 @@ function showActiveUI(periodMinutes) {
   remainingTimeEl.classList.remove("hidden");
   currentPeriodMinutes = periodMinutes;
   if (periodMinutes) {
-    intervalInfoEl.innerText = `Repeats every ${periodMinutes} minutes`;
+    intervalInfoEl.innerText = t("repeatsEvery", periodMinutes);
   }
 }
 
@@ -105,6 +106,12 @@ function startReminder(minutes) {
   setTimeout(syncUIFromAlarm, 100);
 }
 
+function refreshDynamicText() {
+  if (currentPeriodMinutes) {
+    intervalInfoEl.innerText = t("repeatsEvery", currentPeriodMinutes);
+  }
+}
+
 inputEl.addEventListener("input", () => {
   const minutes = validateMinutes(inputEl.value);
   setBtn.disabled = minutes === null;
@@ -114,7 +121,7 @@ inputEl.addEventListener("input", () => {
 setBtn.addEventListener("click", () => {
   const minutes = validateMinutes(inputEl.value);
   if (minutes === null) {
-    errorEl.innerText = `Enter a number between ${MIN_MINUTES} and ${MAX_MINUTES}`;
+    errorEl.innerText = t("validationError", MIN_MINUTES, MAX_MINUTES);
     errorEl.style.display = "block";
     return;
   }
@@ -139,4 +146,14 @@ clearBtn.addEventListener("click", () => {
   errorEl.style.display = "none";
 });
 
-syncUIFromAlarm();
+languageSelect.addEventListener("change", async () => {
+  await setLanguage(languageSelect.value);
+  refreshDynamicText();
+});
+
+(async () => {
+  await initI18n();
+  applyI18n();
+  populateLanguageSelect();
+  syncUIFromAlarm();
+})();

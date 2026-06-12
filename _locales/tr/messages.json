@@ -1,0 +1,30 @@
+{
+  "extName": { "message": "AquiReminder" },
+  "extDescription": {
+    "message": "Düzenli su hatırlatıcılarıyla hidrasyonunuzu koruyun"
+  },
+  "howOften": { "message": "Size ne sıklıkla hatırlatmalıyız?" },
+  "custom": { "message": "Özel" },
+  "minutesPlaceholder": { "message": "Dakika" },
+  "startReminders": { "message": "Hatırlatıcıları başlat" },
+  "nextReminderIn": { "message": "Sonraki hatırlatma" },
+  "stopReminders": { "message": "Hatırlatıcıları durdur" },
+  "repeatsEvery": {
+    "message": "Her $1 dakikada bir tekrarlanır",
+    "placeholders": {
+      "1": { "content": "$1", "example": "30" }
+    }
+  },
+  "validationError": {
+    "message": "$1 ve $2 arasında bir sayı girin",
+    "placeholders": {
+      "1": { "content": "$1", "example": "1" },
+      "2": { "content": "$2", "example": "480" }
+    }
+  },
+  "timeToHydrate": { "message": "Su içme zamanı!" },
+  "didYouDrink": { "message": "Su içtin mi?" },
+  "drankWater": { "message": "Su içtim!" },
+  "playSound": { "message": "Hatırlatma sesini çal" },
+  "language": { "message": "Dil" }
+}

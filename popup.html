@@ -8,35 +8,44 @@
   <body class="popup-body">
     <header class="header">
       <img src="drop.png" alt="" />
-      <h1>AquiReminder</h1>
+      <h1 data-i18n="extName">AquiReminder</h1>
     </header>
+    <div class="language-row">
+      <label for="languageSelect" data-i18n="language">Language</label>
+      <select id="languageSelect" aria-label="Language"></select>
+    </div>
     <main>
       <div id="setReminder">
-        <p class="section-label">How often should we remind you?</p>
+        <p class="section-label" data-i18n="howOften">
+          How often should we remind you?
+        </p>
         <div class="preset-row">
           <button class="chip" type="button" data-minutes="15">15m</button>
           <button class="chip" type="button" data-minutes="30">30m</button>
           <button class="chip" type="button" data-minutes="60">60m</button>
         </div>
         <div class="input-row">
-          <label for="id_Sec">Custom</label>
+          <label for="id_Sec" data-i18n="custom">Custom</label>
           <input
             type="number"
             id="id_Sec"
             min="1"
             max="480"
+            data-i18n-placeholder="minutesPlaceholder"
             placeholder="Minutes"
             aria-describedby="error"
           />
         </div>
         <button class="btn btn-primary" id="id_Set" type="button" disabled>
-          Start reminders
+          <span data-i18n="startReminders">Start reminders</span>
         </button>
         <p class="error" id="error"></p>
       </div>
       <div id="remainingTime" class="hidden">
         <div class="countdown-section">
-          <p class="section-label">Next reminder in</p>
+          <p class="section-label" data-i18n="nextReminderIn">
+            Next reminder in
+          </p>
           <div class="countdown-ring">
             <div class="countdown-ring-inner">
               <span class="countdown-time" id="time" aria-live="polite">0:00</span>
@@ -45,10 +54,11 @@
           <p class="interval-label" id="intervalInfo"></p>
         </div>
         <button class="btn btn-secondary" id="id_Clear" type="button">
-          Stop reminders
+          <span data-i18n="stopReminders">Stop reminders</span>
         </button>
       </div>
     </main>
+    <script src="i18n.js"></script>
     <script src="popup.js"></script>
   </body>
 </html>

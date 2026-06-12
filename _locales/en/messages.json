@@ -1,0 +1,30 @@
+{
+  "extName": { "message": "AquiReminder" },
+  "extDescription": {
+    "message": "Stay hydrated with regular water reminders"
+  },
+  "howOften": { "message": "How often should we remind you?" },
+  "custom": { "message": "Custom" },
+  "minutesPlaceholder": { "message": "Minutes" },
+  "startReminders": { "message": "Start reminders" },
+  "nextReminderIn": { "message": "Next reminder in" },
+  "stopReminders": { "message": "Stop reminders" },
+  "repeatsEvery": {
+    "message": "Repeats every $1 minutes",
+    "placeholders": {
+      "1": { "content": "$1", "example": "30" }
+    }
+  },
+  "validationError": {
+    "message": "Enter a number between $1 and $2",
+    "placeholders": {
+      "1": { "content": "$1", "example": "1" },
+      "2": { "content": "$2", "example": "480" }
+    }
+  },
+  "timeToHydrate": { "message": "Time to hydrate!" },
+  "didYouDrink": { "message": "Did you drink your water?" },
+  "drankWater": { "message": "I drank water!" },
+  "playSound": { "message": "Play reminder sound" },
+  "language": { "message": "Language" }
+}

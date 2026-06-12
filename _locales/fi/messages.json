@@ -1,0 +1,30 @@
+{
+  "extName": { "message": "AquiReminder" },
+  "extDescription": {
+    "message": "Pysy nesteytyneellä säännöllisten vesimuistutusten avulla"
+  },
+  "howOften": { "message": "Kuinka usein haluat muistutuksen?" },
+  "custom": { "message": "Mukautettu" },
+  "minutesPlaceholder": { "message": "Minuutit" },
+  "startReminders": { "message": "Aloita muistutukset" },
+  "nextReminderIn": { "message": "Seuraava muistutus" },
+  "stopReminders": { "message": "Lopeta muistutukset" },
+  "repeatsEvery": {
+    "message": "Toistuu $1 minuutin välein",
+    "placeholders": {
+      "1": { "content": "$1", "example": "30" }
+    }
+  },
+  "validationError": {
+    "message": "Anna luku välillä $1–$2",
+    "placeholders": {
+      "1": { "content": "$1", "example": "1" },
+      "2": { "content": "$2", "example": "480" }
+    }
+  },
+  "timeToHydrate": { "message": "Aika juoda vettä!" },
+  "didYouDrink": { "message": "Joitko vettä?" },
+  "drankWater": { "message": "Join vettä!" },
+  "playSound": { "message": "Soita muistutusääni" },
+  "language": { "message": "Kieli" }
+}

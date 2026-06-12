@@ -30,4 +30,8 @@ playBtn.addEventListener("click", () => {
 
 dismissBtn.addEventListener("click", closeAlertWindow);
 
-tryPlay();
+(async () => {
+  await initI18n();
+  applyI18n();
+  tryPlay();
+})();

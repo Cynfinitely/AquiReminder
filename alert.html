@@ -8,18 +8,21 @@
   <body class="alert-body">
     <main class="card card--alert">
       <img class="alert-icon" src="drop.png" alt="" />
-      <h2 class="alert-title">Time to hydrate!</h2>
-      <p class="alert-subtitle">Did you drink your water?</p>
+      <h2 class="alert-title" data-i18n="timeToHydrate">Time to hydrate!</h2>
+      <p class="alert-subtitle" data-i18n="didYouDrink">
+        Did you drink your water?
+      </p>
       <div class="alert-actions">
         <button class="btn btn-primary" id="dismiss" type="button">
-          I drank water!
+          <span data-i18n="drankWater">I drank water!</span>
         </button>
         <button class="btn btn-ghost hidden" id="playSound" type="button">
-          Play reminder sound
+          <span data-i18n="playSound">Play reminder sound</span>
         </button>
       </div>
       <audio id="alertSound" src="alert.mp3" preload="auto"></audio>
     </main>
+    <script src="i18n.js"></script>
     <script src="alert.js"></script>
   </body>
 </html>

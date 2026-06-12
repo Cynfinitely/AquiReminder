@@ -1,0 +1,30 @@
+{
+  "extName": { "message": "AquiReminder" },
+  "extDescription": {
+    "message": "Bleib hydriert mit regelmäßigen Wasser-Erinnerungen"
+  },
+  "howOften": { "message": "Wie oft sollen wir Sie erinnern?" },
+  "custom": { "message": "Benutzerdefiniert" },
+  "minutesPlaceholder": { "message": "Minuten" },
+  "startReminders": { "message": "Erinnerungen starten" },
+  "nextReminderIn": { "message": "Nächste Erinnerung in" },
+  "stopReminders": { "message": "Erinnerungen stoppen" },
+  "repeatsEvery": {
+    "message": "Wiederholt sich alle $1 Minuten",
+    "placeholders": {
+      "1": { "content": "$1", "example": "30" }
+    }
+  },
+  "validationError": {
+    "message": "Gib eine Zahl zwischen $1 und $2 ein",
+    "placeholders": {
+      "1": { "content": "$1", "example": "1" },
+      "2": { "content": "$2", "example": "480" }
+    }
+  },
+  "timeToHydrate": { "message": "Zeit zum Trinken!" },
+  "didYouDrink": { "message": "Hast du Wasser getrunken?" },
+  "drankWater": { "message": "Ich habe Wasser getrunken!" },
+  "playSound": { "message": "Erinnerungston abspielen" },
+  "language": { "message": "Sprache" }
+}
