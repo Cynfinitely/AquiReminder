@@ -26,5 +26,9 @@
   "didYouDrink": { "message": "Joitko vettä?" },
   "drankWater": { "message": "Join vettä!" },
   "playSound": { "message": "Soita muistutusääni" },
-  "language": { "message": "Kieli" }
+  "language": { "message": "Kieli" },
+  "awaitingAck": { "message": "Odotetaan, että juot vettä" },
+  "pausedHint": {
+    "message": "Jatka painamalla \"Join vettä!\" muistutuksessa"
+  }
 }

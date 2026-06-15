@@ -1,6 +1,7 @@
 const sound = document.getElementById("alertSound");
 const playBtn = document.getElementById("playSound");
 const dismissBtn = document.getElementById("dismiss");
+const ALARM_ID = "alarm_001";
 
 function closeAlertWindow() {
   const fallback = () => window.close();
@@ -28,7 +29,13 @@ playBtn.addEventListener("click", () => {
   playBtn.classList.add("hidden");
 });
 
-dismissBtn.addEventListener("click", closeAlertWindow);
+dismissBtn.addEventListener("click", () => {
+  chrome.runtime.sendMessage({
+    action: "acknowledgeReminder",
+    alarm_id: ALARM_ID,
+  });
+  closeAlertWindow();
+});
 
 (async () => {
   await initI18n();

@@ -4,6 +4,7 @@ const MAX_MINUTES = 480;
 
 let countdownInterval = null;
 let currentPeriodMinutes = null;
+let isPaused = false;
 
 const inputEl = document.getElementById("id_Sec");
 const setBtn = document.getElementById("id_Set");
@@ -12,6 +13,9 @@ const clearBtn = document.getElementById("id_Clear");
 const intervalInfoEl = document.getElementById("intervalInfo");
 const setReminderEl = document.getElementById("setReminder");
 const remainingTimeEl = document.getElementById("remainingTime");
+const countdownSectionEl = document.getElementById("countdownSection");
+const pausedSectionEl = document.getElementById("pausedSection");
+const timeEl = document.getElementById("time");
 const presetChips = document.querySelectorAll(".chip");
 const languageSelect = document.getElementById("languageSelect");
 
@@ -27,6 +31,7 @@ function showSetUI() {
   setReminderEl.classList.remove("hidden");
   remainingTimeEl.classList.add("hidden");
   currentPeriodMinutes = null;
+  isPaused = false;
   stopCountdown();
   document.documentElement.style.setProperty("--progress", 0);
 }
@@ -35,9 +40,26 @@ function showActiveUI(periodMinutes) {
   setReminderEl.classList.add("hidden");
   remainingTimeEl.classList.remove("hidden");
   currentPeriodMinutes = periodMinutes;
-  if (periodMinutes) {
-    intervalInfoEl.innerText = t("repeatsEvery", periodMinutes);
+}
+
+function showCountdownMode() {
+  countdownSectionEl.classList.remove("hidden");
+  pausedSectionEl.classList.add("hidden");
+  isPaused = false;
+  if (currentPeriodMinutes) {
+    intervalInfoEl.innerText = t("repeatsEvery", currentPeriodMinutes);
+    intervalInfoEl.classList.remove("paused-hint");
   }
+}
+
+function showPausedMode() {
+  countdownSectionEl.classList.add("hidden");
+  pausedSectionEl.classList.remove("hidden");
+  isPaused = true;
+  stopCountdown();
+  document.documentElement.style.setProperty("--progress", 1);
+  intervalInfoEl.innerText = t("pausedHint");
+  intervalInfoEl.classList.add("paused-hint");
 }
 
 function formatRemaining(scheduledTime) {
@@ -59,7 +81,7 @@ function updateProgressRing(scheduledTime, periodMinutes) {
 }
 
 function updateCountdown(scheduledTime, periodMinutes) {
-  document.getElementById("time").innerText = formatRemaining(scheduledTime);
+  timeEl.innerText = formatRemaining(scheduledTime);
   updateProgressRing(scheduledTime, periodMinutes);
 }
 
@@ -73,26 +95,49 @@ function stopCountdown() {
 function startCountdown() {
   stopCountdown();
   countdownInterval = setInterval(() => {
-    chrome.alarms.get(ALARM_ID, (alarm) => {
-      if (alarm) {
-        updateCountdown(alarm.scheduledTime, alarm.periodInMinutes);
-      } else {
-        showSetUI();
+    chrome.storage.local.get(["alertPending", "intervalMinutes"], (storage) => {
+      if (storage.alertPending) {
+        showPausedMode();
+        return;
       }
+      chrome.alarms.get(ALARM_ID, (alarm) => {
+        if (alarm) {
+          updateCountdown(alarm.scheduledTime, storage.intervalMinutes);
+        } else if (storage.intervalMinutes) {
+          showPausedMode();
+        } else {
+          showSetUI();
+        }
+      });
     });
   }, 1000);
 }
 
-function syncUIFromAlarm() {
-  chrome.alarms.get(ALARM_ID, (alarm) => {
-    if (alarm) {
-      showActiveUI(alarm.periodInMinutes);
-      updateCountdown(alarm.scheduledTime, alarm.periodInMinutes);
-      startCountdown();
-    } else {
+function syncUIFromStorage() {
+  chrome.storage.local.get(["intervalMinutes", "alertPending"], (storage) => {
+    const { intervalMinutes, alertPending } = storage;
+
+    if (!intervalMinutes) {
       showSetUI();
-      chrome.storage.local.set({ intervalMinutes: null });
+      return;
     }
+
+    showActiveUI(intervalMinutes);
+
+    if (alertPending) {
+      showPausedMode();
+      return;
+    }
+
+    chrome.alarms.get(ALARM_ID, (alarm) => {
+      if (alarm) {
+        showCountdownMode();
+        updateCountdown(alarm.scheduledTime, intervalMinutes);
+        startCountdown();
+      } else {
+        showPausedMode();
+      }
+    });
   });
 }
 
@@ -103,11 +148,14 @@ function startReminder(minutes) {
     minutes: minutes,
   });
   showActiveUI(minutes);
-  setTimeout(syncUIFromAlarm, 100);
+  showCountdownMode();
+  setTimeout(syncUIFromStorage, 100);
 }
 
 function refreshDynamicText() {
-  if (currentPeriodMinutes) {
+  if (isPaused) {
+    intervalInfoEl.innerText = t("pausedHint");
+  } else if (currentPeriodMinutes) {
     intervalInfoEl.innerText = t("repeatsEvery", currentPeriodMinutes);
   }
 }
@@ -155,5 +203,5 @@ languageSelect.addEventListener("change", async () => {
   await initI18n();
   applyI18n();
   populateLanguageSelect();
-  syncUIFromAlarm();
+  syncUIFromStorage();
 })();

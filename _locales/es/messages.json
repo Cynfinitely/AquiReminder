@@ -26,5 +26,9 @@
   "didYouDrink": { "message": "¿Ya tomaste agua?" },
   "drankWater": { "message": "¡Tomé agua!" },
   "playSound": { "message": "Reproducir sonido de recordatorio" },
-  "language": { "message": "Idioma" }
+  "language": { "message": "Idioma" },
+  "awaitingAck": { "message": "Esperando que tomes agua" },
+  "pausedHint": {
+    "message": "Haz clic en \"¡Tomé agua!\" en el recordatorio para continuar"
+  }
 }

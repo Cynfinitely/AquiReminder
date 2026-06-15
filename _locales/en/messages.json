@@ -26,5 +26,9 @@
   "didYouDrink": { "message": "Did you drink your water?" },
   "drankWater": { "message": "I drank water!" },
   "playSound": { "message": "Play reminder sound" },
-  "language": { "message": "Language" }
+  "language": { "message": "Language" },
+  "awaitingAck": { "message": "Waiting for you to drink water" },
+  "pausedHint": {
+    "message": "Click \"I drank water!\" on the reminder to continue"
+  }
 }

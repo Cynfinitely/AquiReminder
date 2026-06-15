@@ -26,5 +26,9 @@
   "didYouDrink": { "message": "Su içtin mi?" },
   "drankWater": { "message": "Su içtim!" },
   "playSound": { "message": "Hatırlatma sesini çal" },
-  "language": { "message": "Dil" }
+  "language": { "message": "Dil" },
+  "awaitingAck": { "message": "Su içmeniz bekleniyor" },
+  "pausedHint": {
+    "message": "Devam etmek için hatırlatıcıda \"Su içtim!\" düğmesine tıklayın"
+  }
 }

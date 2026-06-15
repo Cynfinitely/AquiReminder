@@ -26,5 +26,9 @@
   "didYouDrink": { "message": "Avez-vous bu de l'eau ?" },
   "drankWater": { "message": "J'ai bu de l'eau !" },
   "playSound": { "message": "Jouer le son de rappel" },
-  "language": { "message": "Langue" }
+  "language": { "message": "Langue" },
+  "awaitingAck": { "message": "En attente que vous buviez de l'eau" },
+  "pausedHint": {
+    "message": "Cliquez sur \"J'ai bu de l'eau !\" sur le rappel pour continuer"
+  }
 }

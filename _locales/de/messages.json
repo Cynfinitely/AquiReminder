@@ -26,5 +26,9 @@
   "didYouDrink": { "message": "Hast du Wasser getrunken?" },
   "drankWater": { "message": "Ich habe Wasser getrunken!" },
   "playSound": { "message": "Erinnerungston abspielen" },
-  "language": { "message": "Sprache" }
+  "language": { "message": "Sprache" },
+  "awaitingAck": { "message": "Warten auf dein Wasser" },
+  "pausedHint": {
+    "message": "Klicke auf \"Ich habe Wasser getrunken!\" in der Erinnerung, um fortzufahren"
+  }
 }

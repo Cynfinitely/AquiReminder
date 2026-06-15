@@ -42,7 +42,7 @@
         <p class="error" id="error"></p>
       </div>
       <div id="remainingTime" class="hidden">
-        <div class="countdown-section">
+        <div id="countdownSection" class="countdown-section">
           <p class="section-label" data-i18n="nextReminderIn">
             Next reminder in
           </p>
@@ -51,8 +51,13 @@
               <span class="countdown-time" id="time" aria-live="polite">0:00</span>
             </div>
           </div>
-          <p class="interval-label" id="intervalInfo"></p>
         </div>
+        <div id="pausedSection" class="paused-section hidden">
+          <p class="paused-title" data-i18n="awaitingAck">
+            Waiting for you to drink water
+          </p>
+        </div>
+        <p class="interval-label" id="intervalInfo"></p>
         <button class="btn btn-secondary" id="id_Clear" type="button">
           <span data-i18n="stopReminders">Stop reminders</span>
         </button>

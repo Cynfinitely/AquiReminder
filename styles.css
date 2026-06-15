@@ -297,7 +297,26 @@ main {
 .interval-label {
   font-size: 13px;
   color: var(--color-text-muted);
+  margin: 0 0 12px;
+}
+
+.interval-label.paused-hint {
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 0 4px;
+}
+
+.paused-section {
+  text-align: center;
+  padding: 16px 8px;
+}
+
+.paused-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-primary-dark);
   margin: 0;
+  line-height: 1.4;
 }
 
 .alert-icon {
