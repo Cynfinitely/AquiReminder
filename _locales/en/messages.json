@@ -27,8 +27,26 @@
   "drankWater": { "message": "I drank water!" },
   "playSound": { "message": "Play reminder sound" },
   "language": { "message": "Language" },
-  "awaitingAck": { "message": "Waiting for you to drink water" },
-  "pausedHint": {
-    "message": "Click \"I drank water!\" on the reminder to continue"
+  "dueHint": { "message": "Your reminder is waiting" },
+  "showReminder": { "message": "Show reminder" },
+  "snooze5": { "message": "Snooze 5 min" },
+  "nextAt": {
+    "message": "Next at $1",
+    "placeholders": {
+      "1": { "content": "$1", "example": "3:45 PM" }
+    }
+  },
+  "rangeHint": {
+    "message": "$1–$2 minutes",
+    "placeholders": {
+      "1": { "content": "$1", "example": "1" },
+      "2": { "content": "$2", "example": "480" }
+    }
+  },
+  "presetMinutes": {
+    "message": "$1 min",
+    "placeholders": {
+      "1": { "content": "$1", "example": "15" }
+    }
   }
 }

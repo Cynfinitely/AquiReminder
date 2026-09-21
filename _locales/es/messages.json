@@ -27,8 +27,26 @@
   "drankWater": { "message": "¡Tomé agua!" },
   "playSound": { "message": "Reproducir sonido de recordatorio" },
   "language": { "message": "Idioma" },
-  "awaitingAck": { "message": "Esperando que tomes agua" },
-  "pausedHint": {
-    "message": "Haz clic en \"¡Tomé agua!\" en el recordatorio para continuar"
+  "dueHint": { "message": "Tu recordatorio está esperando" },
+  "showReminder": { "message": "Mostrar recordatorio" },
+  "snooze5": { "message": "Posponer 5 min" },
+  "nextAt": {
+    "message": "Próximo a las $1",
+    "placeholders": {
+      "1": { "content": "$1", "example": "15:45" }
+    }
+  },
+  "rangeHint": {
+    "message": "$1–$2 minutos",
+    "placeholders": {
+      "1": { "content": "$1", "example": "1" },
+      "2": { "content": "$2", "example": "480" }
+    }
+  },
+  "presetMinutes": {
+    "message": "$1 min",
+    "placeholders": {
+      "1": { "content": "$1", "example": "15" }
+    }
   }
 }

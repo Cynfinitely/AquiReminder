@@ -27,8 +27,26 @@
   "drankWater": { "message": "J'ai bu de l'eau !" },
   "playSound": { "message": "Jouer le son de rappel" },
   "language": { "message": "Langue" },
-  "awaitingAck": { "message": "En attente que vous buviez de l'eau" },
-  "pausedHint": {
-    "message": "Cliquez sur \"J'ai bu de l'eau !\" sur le rappel pour continuer"
+  "dueHint": { "message": "Votre rappel est en attente" },
+  "showReminder": { "message": "Afficher le rappel" },
+  "snooze5": { "message": "Reporter de 5 min" },
+  "nextAt": {
+    "message": "Prochain à $1",
+    "placeholders": {
+      "1": { "content": "$1", "example": "15:45" }
+    }
+  },
+  "rangeHint": {
+    "message": "$1–$2 minutes",
+    "placeholders": {
+      "1": { "content": "$1", "example": "1" },
+      "2": { "content": "$2", "example": "480" }
+    }
+  },
+  "presetMinutes": {
+    "message": "$1 min",
+    "placeholders": {
+      "1": { "content": "$1", "example": "15" }
+    }
   }
 }

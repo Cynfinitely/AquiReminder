@@ -7,7 +7,7 @@
   "custom": { "message": "Özel" },
   "minutesPlaceholder": { "message": "Dakika" },
   "startReminders": { "message": "Hatırlatıcıları başlat" },
-  "nextReminderIn": { "message": "Sonraki hatırlatma" },
+  "nextReminderIn": { "message": "Sonraki hatırlatmaya" },
   "stopReminders": { "message": "Hatırlatıcıları durdur" },
   "repeatsEvery": {
     "message": "Her $1 dakikada bir tekrarlanır",
@@ -27,8 +27,26 @@
   "drankWater": { "message": "Su içtim!" },
   "playSound": { "message": "Hatırlatma sesini çal" },
   "language": { "message": "Dil" },
-  "awaitingAck": { "message": "Su içmeniz bekleniyor" },
-  "pausedHint": {
-    "message": "Devam etmek için hatırlatıcıda \"Su içtim!\" düğmesine tıklayın"
+  "dueHint": { "message": "Hatırlatıcınız bekliyor" },
+  "showReminder": { "message": "Hatırlatıcıyı göster" },
+  "snooze5": { "message": "5 dk ertele" },
+  "nextAt": {
+    "message": "Sonraki: $1",
+    "placeholders": {
+      "1": { "content": "$1", "example": "15:45" }
+    }
+  },
+  "rangeHint": {
+    "message": "$1–$2 dakika",
+    "placeholders": {
+      "1": { "content": "$1", "example": "1" },
+      "2": { "content": "$2", "example": "480" }
+    }
+  },
+  "presetMinutes": {
+    "message": "$1 dk",
+    "placeholders": {
+      "1": { "content": "$1", "example": "15" }
+    }
   }
 }

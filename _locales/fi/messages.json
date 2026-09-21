@@ -7,7 +7,7 @@
   "custom": { "message": "Mukautettu" },
   "minutesPlaceholder": { "message": "Minuutit" },
   "startReminders": { "message": "Aloita muistutukset" },
-  "nextReminderIn": { "message": "Seuraava muistutus" },
+  "nextReminderIn": { "message": "Seuraavaan muistutukseen" },
   "stopReminders": { "message": "Lopeta muistutukset" },
   "repeatsEvery": {
     "message": "Toistuu $1 minuutin välein",
@@ -27,8 +27,26 @@
   "drankWater": { "message": "Join vettä!" },
   "playSound": { "message": "Soita muistutusääni" },
   "language": { "message": "Kieli" },
-  "awaitingAck": { "message": "Odotetaan, että juot vettä" },
-  "pausedHint": {
-    "message": "Jatka painamalla \"Join vettä!\" muistutuksessa"
+  "dueHint": { "message": "Muistutus odottaa" },
+  "showReminder": { "message": "Näytä muistutus" },
+  "snooze5": { "message": "Lykkää 5 min" },
+  "nextAt": {
+    "message": "Seuraava klo $1",
+    "placeholders": {
+      "1": { "content": "$1", "example": "15.45" }
+    }
+  },
+  "rangeHint": {
+    "message": "$1–$2 minuuttia",
+    "placeholders": {
+      "1": { "content": "$1", "example": "1" },
+      "2": { "content": "$2", "example": "480" }
+    }
+  },
+  "presetMinutes": {
+    "message": "$1 min",
+    "placeholders": {
+      "1": { "content": "$1", "example": "15" }
+    }
   }
 }
