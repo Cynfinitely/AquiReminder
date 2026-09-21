@@ -4,17 +4,23 @@ const MAX_MINUTES = 480;
 
 let countdownInterval = null;
 let currentPeriodMinutes = null;
-let isPaused = false;
+let isDue = false;
+let selectedPresetMinutes = null;
 
 const inputEl = document.getElementById("id_Sec");
 const setBtn = document.getElementById("id_Set");
 const errorEl = document.getElementById("error");
+const rangeHintEl = document.getElementById("rangeHint");
 const clearBtn = document.getElementById("id_Clear");
+const ackBtn = document.getElementById("id_Ack");
+const reopenBtn = document.getElementById("id_Reopen");
+const snoozeBtn = document.getElementById("id_Snooze");
 const intervalInfoEl = document.getElementById("intervalInfo");
+const nextAtEl = document.getElementById("nextAt");
 const setReminderEl = document.getElementById("setReminder");
 const remainingTimeEl = document.getElementById("remainingTime");
 const countdownSectionEl = document.getElementById("countdownSection");
-const pausedSectionEl = document.getElementById("pausedSection");
+const dueSectionEl = document.getElementById("dueSection");
 const timeEl = document.getElementById("time");
 const presetChips = document.querySelectorAll(".chip");
 const languageSelect = document.getElementById("languageSelect");
@@ -27,39 +33,43 @@ function validateMinutes(value) {
   return minutes;
 }
 
-function showSetUI() {
-  setReminderEl.classList.remove("hidden");
-  remainingTimeEl.classList.add("hidden");
-  currentPeriodMinutes = null;
-  isPaused = false;
-  stopCountdown();
-  document.documentElement.style.setProperty("--progress", 0);
+function setInputInvalid(isInvalid) {
+  inputEl.setAttribute("aria-invalid", isInvalid ? "true" : "false");
 }
 
-function showActiveUI(periodMinutes) {
-  setReminderEl.classList.add("hidden");
-  remainingTimeEl.classList.remove("hidden");
-  currentPeriodMinutes = periodMinutes;
+function hideError() {
+  errorEl.textContent = "";
+  errorEl.style.display = "none";
+  setInputInvalid(false);
 }
 
-function showCountdownMode() {
-  countdownSectionEl.classList.remove("hidden");
-  pausedSectionEl.classList.add("hidden");
-  isPaused = false;
-  if (currentPeriodMinutes) {
-    intervalInfoEl.innerText = t("repeatsEvery", currentPeriodMinutes);
-    intervalInfoEl.classList.remove("paused-hint");
-  }
+function showError() {
+  errorEl.innerText = t("validationError", MIN_MINUTES, MAX_MINUTES);
+  errorEl.style.display = "block";
+  setInputInvalid(true);
 }
 
-function showPausedMode() {
-  countdownSectionEl.classList.add("hidden");
-  pausedSectionEl.classList.remove("hidden");
-  isPaused = true;
-  stopCountdown();
-  document.documentElement.style.setProperty("--progress", 1);
-  intervalInfoEl.innerText = t("pausedHint");
-  intervalInfoEl.classList.add("paused-hint");
+function refreshChipLabels() {
+  presetChips.forEach((chip) => {
+    chip.textContent = t("presetMinutes", chip.dataset.minutes);
+  });
+}
+
+function selectChip(minutes) {
+  selectedPresetMinutes = minutes;
+  presetChips.forEach((chip) => {
+    const selected = parseInt(chip.dataset.minutes, 10) === minutes;
+    chip.classList.toggle("chip--active", selected);
+    chip.setAttribute("aria-pressed", selected ? "true" : "false");
+  });
+}
+
+function clearChipSelection() {
+  selectedPresetMinutes = null;
+  presetChips.forEach((chip) => {
+    chip.classList.remove("chip--active");
+    chip.setAttribute("aria-pressed", "false");
+  });
 }
 
 function formatRemaining(scheduledTime) {
@@ -69,6 +79,13 @@ function formatRemaining(scheduledTime) {
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+}
+
+function formatClockTime(scheduledTime) {
+  return new Date(scheduledTime).toLocaleTimeString(getLanguage(), {
+    hour: "numeric",
+    minute: "2-digit",
+  });
 }
 
 function updateProgressRing(scheduledTime, periodMinutes) {
@@ -82,6 +99,7 @@ function updateProgressRing(scheduledTime, periodMinutes) {
 
 function updateCountdown(scheduledTime, periodMinutes) {
   timeEl.innerText = formatRemaining(scheduledTime);
+  nextAtEl.innerText = t("nextAt", formatClockTime(scheduledTime));
   updateProgressRing(scheduledTime, periodMinutes);
 }
 
@@ -95,22 +113,53 @@ function stopCountdown() {
 function startCountdown() {
   stopCountdown();
   countdownInterval = setInterval(() => {
-    chrome.storage.local.get(["alertPending", "intervalMinutes"], (storage) => {
-      if (storage.alertPending) {
-        showPausedMode();
+    if (isDue || !currentPeriodMinutes) {
+      stopCountdown();
+      return;
+    }
+    chrome.alarms.get(ALARM_ID, (alarm) => {
+      if (isDue || !currentPeriodMinutes) {
+        stopCountdown();
         return;
       }
-      chrome.alarms.get(ALARM_ID, (alarm) => {
-        if (alarm) {
-          updateCountdown(alarm.scheduledTime, storage.intervalMinutes);
-        } else if (storage.intervalMinutes) {
-          showPausedMode();
-        } else {
-          showSetUI();
-        }
-      });
+      if (alarm) {
+        updateCountdown(alarm.scheduledTime, currentPeriodMinutes);
+      }
     });
   }, 1000);
+}
+
+function showIdleUI() {
+  setReminderEl.classList.remove("hidden");
+  remainingTimeEl.classList.add("hidden");
+  currentPeriodMinutes = null;
+  isDue = false;
+  stopCountdown();
+  document.documentElement.style.setProperty("--progress", 0);
+  nextAtEl.innerText = "";
+}
+
+function showActiveShell(periodMinutes) {
+  setReminderEl.classList.add("hidden");
+  remainingTimeEl.classList.remove("hidden");
+  currentPeriodMinutes = periodMinutes;
+}
+
+function showCountdownMode() {
+  countdownSectionEl.classList.remove("hidden");
+  dueSectionEl.classList.add("hidden");
+  isDue = false;
+  if (currentPeriodMinutes) {
+    intervalInfoEl.innerText = t("repeatsEvery", currentPeriodMinutes);
+  }
+}
+
+function showDueMode() {
+  countdownSectionEl.classList.add("hidden");
+  dueSectionEl.classList.remove("hidden");
+  isDue = true;
+  stopCountdown();
+  document.documentElement.style.setProperty("--progress", 1);
 }
 
 function syncUIFromStorage() {
@@ -118,24 +167,26 @@ function syncUIFromStorage() {
     const { intervalMinutes, alertPending } = storage;
 
     if (!intervalMinutes) {
-      showSetUI();
+      showIdleUI();
       return;
     }
 
-    showActiveUI(intervalMinutes);
+    showActiveShell(intervalMinutes);
 
     if (alertPending) {
-      showPausedMode();
+      showDueMode();
       return;
     }
 
     chrome.alarms.get(ALARM_ID, (alarm) => {
+      showCountdownMode();
       if (alarm) {
-        showCountdownMode();
         updateCountdown(alarm.scheduledTime, intervalMinutes);
         startCountdown();
       } else {
-        showPausedMode();
+        timeEl.innerText = "0:00";
+        nextAtEl.innerText = "";
+        startCountdown();
       }
     });
   });
@@ -144,33 +195,59 @@ function syncUIFromStorage() {
 function startReminder(minutes) {
   chrome.runtime.sendMessage({
     action: "setAlarm",
-    alarm_id: ALARM_ID,
-    minutes: minutes,
+    minutes,
   });
-  showActiveUI(minutes);
+  showActiveShell(minutes);
   showCountdownMode();
-  setTimeout(syncUIFromStorage, 100);
+  updateCountdown(Date.now() + minutes * 60 * 1000, minutes);
+  startCountdown();
 }
 
 function refreshDynamicText() {
-  if (isPaused) {
-    intervalInfoEl.innerText = t("pausedHint");
-  } else if (currentPeriodMinutes) {
+  rangeHintEl.innerText = t("rangeHint", MIN_MINUTES, MAX_MINUTES);
+  refreshChipLabels();
+  if (errorEl.style.display === "block") {
+    errorEl.innerText = t("validationError", MIN_MINUTES, MAX_MINUTES);
+  }
+  if (isDue) return;
+  if (currentPeriodMinutes) {
     intervalInfoEl.innerText = t("repeatsEvery", currentPeriodMinutes);
+    chrome.alarms.get(ALARM_ID, (alarm) => {
+      if (alarm) {
+        nextAtEl.innerText = t("nextAt", formatClockTime(alarm.scheduledTime));
+      }
+    });
   }
 }
 
 inputEl.addEventListener("input", () => {
   const minutes = validateMinutes(inputEl.value);
   setBtn.disabled = minutes === null;
-  errorEl.style.display = "none";
+  if (inputEl.value !== "" && minutes === null) {
+    showError();
+  } else {
+    hideError();
+  }
+  if (minutes === selectedPresetMinutes) return;
+  if (minutes === null) {
+    clearChipSelection();
+    return;
+  }
+  const matchingChip = [...presetChips].find(
+    (chip) => parseInt(chip.dataset.minutes, 10) === minutes
+  );
+  if (matchingChip) {
+    selectChip(minutes);
+  } else {
+    clearChipSelection();
+    selectedPresetMinutes = null;
+  }
 });
 
 setBtn.addEventListener("click", () => {
   const minutes = validateMinutes(inputEl.value);
   if (minutes === null) {
-    errorEl.innerText = t("validationError", MIN_MINUTES, MAX_MINUTES);
-    errorEl.style.display = "block";
+    showError();
     return;
   }
   startReminder(minutes);
@@ -181,17 +258,30 @@ presetChips.forEach((chip) => {
     const minutes = parseInt(chip.dataset.minutes, 10);
     inputEl.value = minutes;
     setBtn.disabled = false;
-    errorEl.style.display = "none";
-    startReminder(minutes);
+    hideError();
+    selectChip(minutes);
   });
 });
 
 clearBtn.addEventListener("click", () => {
-  chrome.runtime.sendMessage({ action: "clearAlarm", alarm_id: ALARM_ID });
-  showSetUI();
+  chrome.runtime.sendMessage({ action: "clearAlarm" });
+  showIdleUI();
   inputEl.value = "";
   setBtn.disabled = true;
-  errorEl.style.display = "none";
+  hideError();
+  clearChipSelection();
+});
+
+ackBtn.addEventListener("click", () => {
+  chrome.runtime.sendMessage({ action: "acknowledgeReminder" });
+});
+
+reopenBtn.addEventListener("click", () => {
+  chrome.runtime.sendMessage({ action: "reopenAlert" });
+});
+
+snoozeBtn.addEventListener("click", () => {
+  chrome.runtime.sendMessage({ action: "snoozeReminder" });
 });
 
 languageSelect.addEventListener("change", async () => {
@@ -199,9 +289,17 @@ languageSelect.addEventListener("change", async () => {
   refreshDynamicText();
 });
 
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== "local") return;
+  if (changes.intervalMinutes || changes.alertPending) {
+    syncUIFromStorage();
+  }
+});
+
 (async () => {
   await initI18n();
   applyI18n();
   populateLanguageSelect();
+  refreshDynamicText();
   syncUIFromStorage();
 })();

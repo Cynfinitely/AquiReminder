@@ -3,7 +3,7 @@
   "extDescription": {
     "message": "Bleib hydriert mit regelmäßigen Wasser-Erinnerungen"
   },
-  "howOften": { "message": "Wie oft sollen wir Sie erinnern?" },
+  "howOften": { "message": "Wie oft sollen wir dich erinnern?" },
   "custom": { "message": "Benutzerdefiniert" },
   "minutesPlaceholder": { "message": "Minuten" },
   "startReminders": { "message": "Erinnerungen starten" },
@@ -27,8 +27,26 @@
   "drankWater": { "message": "Ich habe Wasser getrunken!" },
   "playSound": { "message": "Erinnerungston abspielen" },
   "language": { "message": "Sprache" },
-  "awaitingAck": { "message": "Warten auf dein Wasser" },
-  "pausedHint": {
-    "message": "Klicke auf \"Ich habe Wasser getrunken!\" in der Erinnerung, um fortzufahren"
+  "dueHint": { "message": "Deine Erinnerung wartet" },
+  "showReminder": { "message": "Erinnerung zeigen" },
+  "snooze5": { "message": "5 Min. später" },
+  "nextAt": {
+    "message": "Nächste um $1",
+    "placeholders": {
+      "1": { "content": "$1", "example": "15:45" }
+    }
+  },
+  "rangeHint": {
+    "message": "$1–$2 Minuten",
+    "placeholders": {
+      "1": { "content": "$1", "example": "1" },
+      "2": { "content": "$2", "example": "480" }
+    }
+  },
+  "presetMinutes": {
+    "message": "$1 Min",
+    "placeholders": {
+      "1": { "content": "$1", "example": "15" }
+    }
   }
 }

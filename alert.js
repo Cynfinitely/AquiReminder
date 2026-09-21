@@ -1,7 +1,7 @@
 const sound = document.getElementById("alertSound");
 const playBtn = document.getElementById("playSound");
 const dismissBtn = document.getElementById("dismiss");
-const ALARM_ID = "alarm_001";
+const snoozeBtn = document.getElementById("snooze");
 
 function closeAlertWindow() {
   const fallback = () => window.close();
@@ -30,15 +30,18 @@ playBtn.addEventListener("click", () => {
 });
 
 dismissBtn.addEventListener("click", () => {
-  chrome.runtime.sendMessage({
-    action: "acknowledgeReminder",
-    alarm_id: ALARM_ID,
-  });
+  chrome.runtime.sendMessage({ action: "acknowledgeReminder" });
+  closeAlertWindow();
+});
+
+snoozeBtn.addEventListener("click", () => {
+  chrome.runtime.sendMessage({ action: "snoozeReminder" });
   closeAlertWindow();
 });
 
 (async () => {
   await initI18n();
   applyI18n();
+  dismissBtn.focus();
   tryPlay();
 })();
