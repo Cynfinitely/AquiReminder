@@ -1,7 +1,5 @@
-const MIN_MINUTES = 1;
-const MAX_MINUTES = 480;
-const ALARM_ID = "alarm_001";
-const SNOOZE_MINUTES = 5;
+importScripts("constants.js");
+
 const ALERT_WIDTH = 360;
 const ALERT_HEIGHT = 400;
 const BADGE_COLOR = "#0277bd";
@@ -82,10 +80,8 @@ function clearDueState(callback) {
 
 chrome.runtime.onMessage.addListener((request) => {
   if (request.action === "setAlarm") {
-    const minutes = parseInt(request.minutes, 10);
-    if (isNaN(minutes) || minutes < MIN_MINUTES || minutes > MAX_MINUTES) {
-      return;
-    }
+    const minutes = validateMinutes(request.minutes);
+    if (minutes === null) return;
     closeAlertWindow(() => {
       chrome.storage.local.set(
         {
@@ -113,15 +109,16 @@ chrome.runtime.onMessage.addListener((request) => {
     chrome.storage.local.get(["intervalMinutes"], (result) => {
       closeAlertWindow(() => {
         clearDueState(() => {
-          if (result.intervalMinutes) {
-            scheduleNextAlarm(result.intervalMinutes);
+          const minutes = validateMinutes(result.intervalMinutes);
+          if (minutes !== null) {
+            scheduleNextAlarm(minutes);
           }
         });
       });
     });
   } else if (request.action === "snoozeReminder") {
     chrome.storage.local.get(["intervalMinutes"], (result) => {
-      if (!result.intervalMinutes) return;
+      if (validateMinutes(result.intervalMinutes) === null) return;
       closeAlertWindow(() => {
         clearDueState(() => {
           scheduleNextAlarm(SNOOZE_MINUTES);
@@ -162,8 +159,9 @@ chrome.windows.onRemoved.addListener((windowId) => {
 
 function repairSchedule() {
   chrome.storage.local.get(["intervalMinutes", "alertPending"], (result) => {
-    const { intervalMinutes, alertPending } = result;
-    if (!intervalMinutes) {
+    const intervalMinutes = validateMinutes(result.intervalMinutes);
+    const { alertPending } = result;
+    if (intervalMinutes === null) {
       setDueBadge(false);
       return;
     }

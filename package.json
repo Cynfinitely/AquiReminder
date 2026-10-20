@@ -1,0 +1,18 @@
+{
+  "name": "aquireminder-dev",
+  "private": true,
+  "type": "module",
+  "description": "Dev tooling only (git hooks). Not part of the extension bundle.",
+  "scripts": {
+    "prepare": "sh -c '[ -n \"$CI\" ] || [ ! -d .git ] || husky'",
+    "check:ai-attribution": "node scripts/check-ai-attribution.mjs",
+    "test:ai-attribution": "node --test scripts/check-ai-attribution.test.mjs",
+    "test:commitlint": "node --test scripts/commitlint-config.test.mjs",
+    "check:locales": "node scripts/check-locales.mjs"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
+    "husky": "^9.1.7"
+  }
+}

@@ -5,3 +5,11 @@
 
 # Thumbnails
 ._*
+
+# Dependencies (dev tooling only)
+node_modules/
+
+# Logs, OS files, per-user agent settings
+*.log
+Thumbs.db
+.claude/settings.local.json
