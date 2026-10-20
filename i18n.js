@@ -46,7 +46,8 @@ function t(key, ...args) {
   if (!entry?.message) return key;
   let text = entry.message;
   args.forEach((arg, i) => {
-    text = text.replace(`$${i + 1}`, String(arg));
+    // Function replacer so "$" in args isn't treated as a replacement pattern.
+    text = text.replaceAll(`$${i + 1}`, () => String(arg));
   });
   return text;
 }

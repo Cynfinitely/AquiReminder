@@ -8,7 +8,11 @@ function closeAlertWindow() {
   if (typeof chrome !== "undefined" && chrome.windows?.getCurrent) {
     chrome.windows.getCurrent((win) => {
       if (win?.id && chrome.windows.remove) {
-        chrome.windows.remove(win.id, fallback);
+        // The background may already be closing this window; ignore that error.
+        chrome.windows.remove(win.id, () => {
+          void chrome.runtime.lastError;
+          fallback();
+        });
       } else {
         fallback();
       }

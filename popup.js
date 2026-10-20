@@ -1,7 +1,3 @@
-const ALARM_ID = "alarm_001";
-const MIN_MINUTES = 1;
-const MAX_MINUTES = 480;
-
 let countdownInterval = null;
 let currentPeriodMinutes = null;
 let isDue = false;
@@ -25,14 +21,6 @@ const timeEl = document.getElementById("time");
 const presetChips = document.querySelectorAll(".chip");
 const languageSelect = document.getElementById("languageSelect");
 
-function validateMinutes(value) {
-  const minutes = parseInt(value, 10);
-  if (isNaN(minutes) || minutes < MIN_MINUTES || minutes > MAX_MINUTES) {
-    return null;
-  }
-  return minutes;
-}
-
 function setInputInvalid(isInvalid) {
   inputEl.setAttribute("aria-invalid", isInvalid ? "true" : "false");
 }
@@ -44,7 +32,7 @@ function hideError() {
 }
 
 function showError() {
-  errorEl.innerText = t("validationError", MIN_MINUTES, MAX_MINUTES);
+  errorEl.textContent = t("validationError", MIN_MINUTES, MAX_MINUTES);
   errorEl.style.display = "block";
   setInputInvalid(true);
 }
@@ -76,9 +64,12 @@ function formatRemaining(scheduledTime) {
   const ms = scheduledTime - Date.now();
   if (ms <= 0) return "0:00";
   const totalSeconds = Math.ceil(ms / 1000);
-  const minutes = Math.floor(totalSeconds / 60);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
-  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  const pad = (n) => n.toString().padStart(2, "0");
+  if (hours > 0) return `${hours}:${pad(minutes)}:${pad(seconds)}`;
+  return `${minutes}:${pad(seconds)}`;
 }
 
 function formatClockTime(scheduledTime) {
@@ -98,8 +89,8 @@ function updateProgressRing(scheduledTime, periodMinutes) {
 }
 
 function updateCountdown(scheduledTime, periodMinutes) {
-  timeEl.innerText = formatRemaining(scheduledTime);
-  nextAtEl.innerText = t("nextAt", formatClockTime(scheduledTime));
+  timeEl.textContent = formatRemaining(scheduledTime);
+  nextAtEl.textContent = t("nextAt", formatClockTime(scheduledTime));
   updateProgressRing(scheduledTime, periodMinutes);
 }
 
@@ -136,7 +127,7 @@ function showIdleUI() {
   isDue = false;
   stopCountdown();
   document.documentElement.style.setProperty("--progress", 0);
-  nextAtEl.innerText = "";
+  nextAtEl.textContent = "";
 }
 
 function showActiveShell(periodMinutes) {
@@ -150,7 +141,7 @@ function showCountdownMode() {
   dueSectionEl.classList.add("hidden");
   isDue = false;
   if (currentPeriodMinutes) {
-    intervalInfoEl.innerText = t("repeatsEvery", currentPeriodMinutes);
+    intervalInfoEl.textContent = t("repeatsEvery", currentPeriodMinutes);
   }
 }
 
@@ -164,9 +155,10 @@ function showDueMode() {
 
 function syncUIFromStorage() {
   chrome.storage.local.get(["intervalMinutes", "alertPending"], (storage) => {
-    const { intervalMinutes, alertPending } = storage;
+    const intervalMinutes = validateMinutes(storage.intervalMinutes);
+    const { alertPending } = storage;
 
-    if (!intervalMinutes) {
+    if (intervalMinutes === null) {
       showIdleUI();
       return;
     }
@@ -184,8 +176,8 @@ function syncUIFromStorage() {
         updateCountdown(alarm.scheduledTime, intervalMinutes);
         startCountdown();
       } else {
-        timeEl.innerText = "0:00";
-        nextAtEl.innerText = "";
+        timeEl.textContent = "0:00";
+        nextAtEl.textContent = "";
         startCountdown();
       }
     });
@@ -204,17 +196,17 @@ function startReminder(minutes) {
 }
 
 function refreshDynamicText() {
-  rangeHintEl.innerText = t("rangeHint", MIN_MINUTES, MAX_MINUTES);
+  rangeHintEl.textContent = t("rangeHint", MIN_MINUTES, MAX_MINUTES);
   refreshChipLabels();
   if (errorEl.style.display === "block") {
-    errorEl.innerText = t("validationError", MIN_MINUTES, MAX_MINUTES);
+    errorEl.textContent = t("validationError", MIN_MINUTES, MAX_MINUTES);
   }
   if (isDue) return;
   if (currentPeriodMinutes) {
-    intervalInfoEl.innerText = t("repeatsEvery", currentPeriodMinutes);
+    intervalInfoEl.textContent = t("repeatsEvery", currentPeriodMinutes);
     chrome.alarms.get(ALARM_ID, (alarm) => {
       if (alarm) {
-        nextAtEl.innerText = t("nextAt", formatClockTime(alarm.scheduledTime));
+        nextAtEl.textContent = t("nextAt", formatClockTime(alarm.scheduledTime));
       }
     });
   }
@@ -240,7 +232,12 @@ inputEl.addEventListener("input", () => {
     selectChip(minutes);
   } else {
     clearChipSelection();
-    selectedPresetMinutes = null;
+  }
+});
+
+inputEl.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && !setBtn.disabled) {
+    setBtn.click();
   }
 });
 

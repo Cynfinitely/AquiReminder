@@ -48,6 +48,7 @@
             id="id_Sec"
             min="1"
             max="480"
+            step="1"
             data-i18n-placeholder="minutesPlaceholder"
             placeholder="Minutes"
             aria-describedby="rangeHint error"
@@ -66,7 +67,7 @@
           </p>
           <div class="countdown-ring">
             <div class="countdown-ring-inner">
-              <span class="countdown-time" id="time" aria-live="polite">0:00</span>
+              <span class="countdown-time" id="time">0:00</span>
             </div>
           </div>
           <p class="interval-label" id="intervalInfo"></p>
@@ -98,6 +99,7 @@
       <label for="languageSelect" data-i18n="language">Language</label>
       <select id="languageSelect"></select>
     </footer>
+    <script src="constants.js"></script>
     <script src="i18n.js"></script>
     <script src="popup.js"></script>
   </body>
