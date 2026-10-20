@@ -13,7 +13,7 @@ General conventions for any agent or human working in this repo. Repo-specific n
 ## Git
 
 - The main branch is deployable. Work on feature branches and merge through PRs.
-- Commit messages and PR titles are conventional commits: `type(optional-scope): subject` (`feat`, `fix`, `chore`, `docs`, `refactor`, `test`, `ci`, `build`, `perf`, `revert`, `style`). Enforced by commitlint in the local commit-msg hook.
+- Commit messages and PR titles are conventional commits: `type(optional-scope): subject` (`feat`, `fix`, `chore`, `docs`, `refactor`, `test`, `ci`, `build`, `perf`, `revert`, `style`). Enforced by commitlint locally and on the PR title in CI.
 - No AI attribution anywhere in git history ([no-ai-attribution.md](no-ai-attribution.md)).
 - Never force-push or rewrite shared branches. Never use `--no-verify`.
 - Git history is the project log. Do not keep a hand-appended changelog of every change in a shared file (it conflicts on every merge); release notes are fine.
@@ -46,5 +46,5 @@ General conventions for any agent or human working in this repo. Repo-specific n
 ## Repo-specific conventions
 
 - Flat layout: each extension page is a `name.html` + `name.js` pair at the repo root (`popup`, `alert`); `background.js` is the service worker; shared styles in `styles.css`.
-- Every user-visible string goes through `_locales/<lang>/messages.json` and `i18n.js`. Add a new key to **all** locales (de, en, es, fi, fr, tr) in the same change.
+- Every user-visible string goes through `_locales/<lang>/messages.json` and `i18n.js`. Add a new key to **all** locales (de, en, es, fi, fr, tr) in the same change; `npm run check:locales` verifies.
 - Plain browser JavaScript, no bundler, no npm runtime dependencies. `package.json` is dev tooling only.

@@ -7,7 +7,8 @@
     "prepare": "sh -c '[ -n \"$CI\" ] || [ ! -d .git ] || husky'",
     "check:ai-attribution": "node scripts/check-ai-attribution.mjs",
     "test:ai-attribution": "node --test scripts/check-ai-attribution.test.mjs",
-    "test:commitlint": "node --test scripts/commitlint-config.test.mjs"
+    "test:commitlint": "node --test scripts/commitlint-config.test.mjs",
+    "check:locales": "node scripts/check-locales.mjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.4",
